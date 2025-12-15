@@ -7,7 +7,7 @@
 *{box-sizing:border-box}
 html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#fff;background:var(--bg)}
 
-/* Grid background to mimic the screenshot */
+/* Grid background */
 body::before{
   content:"";
   position:fixed;inset:0;z-index:0;pointer-events:none;
