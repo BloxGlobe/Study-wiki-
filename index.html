@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>StudyHub Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h2>StudyHub</h2>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="#/" class="nav-item active" data-route="home">Home</a>
+      <a href="#/search" class="nav-item" data-route="search">Search Notes</a>
+      <a href="#/library" class="nav-item" data-route="library">Library</a>
+      <a href="#/projects" class="nav-item" data-route="projects">Projects</a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <span>Local Mode</span>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main">
+    <header class="main-header">
+      <h1 id="page-title">Home</h1>
+    </header>
+
+    <!-- Dynamic content gets injected here -->
+    <section class="content" id="app">
+      <div class="card">
+        <h3>Welcome 👋</h3>
+        <p>
+          This is your study dashboard.  
+          Your notes, projects, and saved content will appear here.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <!-- App Entry -->
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>
