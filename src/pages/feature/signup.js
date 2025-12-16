@@ -1,62 +1,108 @@
 import { signup } from "../../modules/auth.js";
 
 function ensureSignupCSS(){
-	const href = 'src/signup.css';
-	if (!document.querySelector(`link[href="${href}"]`)){
-		const l = document.createElement('link'); l.rel='stylesheet'; l.href=href; document.head.appendChild(l);
-	}
+  const href = 'src/signup.css';
+  if (!document.querySelector(`link[href="${href}"]`)){
+    const l = document.createElement('link');
+    l.rel = 'stylesheet';
+    l.href = href;
+    document.head.appendChild(l);
+  }
 }
 
 export default function Signup(container) {
-		ensureSignupCSS();
-		container.innerHTML = `
-		  <div class="rbx-signup-wrapper">
-		    <div class="rbx-signup-card">
-		      <div class="rbx-signup-hero">
-		        <img src="https://imgs.search.brave.com/EQ_rhM1s2iLSsWoJ9gBthcDBjU3HyfukRJ8poeRBCcs/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMudmVjdGVlenku/Y29tL3N5c3RlbS9y/ZXNvdXJjZXMvdGh1/bWJuYWlscy8wMzYv/NzA3LzEzNi9zbWFs/bC9zdHVkeWluZy1s/aW5lLWljb24taXNv/bGF0ZWQtb24td2hp/dGUtYmFja2dyb3Vu/ZC1yZWFkaW5nLWJv/b2stbGluZS1pY29u/LXZlY3Rvci5qcGc" alt="logo">
-		        <div class="rbx-signup-title">Create your Study account</div>
-		      </div>
-		      <form id="signup-form" class="signup-form">
-		        <div class="field"><label>Display name</label><input name="name" placeholder="Display name" required /></div>
-		        <div class="field"><label>Email</label><input name="email" type="email" placeholder="Email" required /></div>
-		        <div class="field"><label>Password</label><input name="password" type="password" placeholder="Password" required /></div>
-		        <div class="dob-row">
-		          <input name="dob-day" placeholder="Day" />
-		          <input name="dob-month" placeholder="Month" />
-		          <input name="dob-year" placeholder="Year" />
-		        </div>
-		        <div class="signup-cta"><button id="signup-btn" class="btn-primary">Sign Up</button> <button id="signup-cancel" class="btn-secondary" type="button">Cancel</button></div>
-		        <div class="signup-note">By creating an account you agree to the <a href="#">Terms</a> and <a href="#">Privacy</a>.</div>
-		        <div id="signup-err" class="auth-error" style="display:none;margin-top:8px"></div>
-		      </form>
-		    </div>
-		  </div>
-		`;
+  ensureSignupCSS();
 
-		const form = container.querySelector('#signup-form');
-		const err = container.querySelector('#signup-err');
+  container.innerHTML = `
+    <section class="auth-page">
+      <div class="auth-card">
+        <header class="auth-header">
+          <h1>Create your account</h1>
+          <p>Join Study Wiki and share knowledge.</p>
+        </header>
 
-		container.querySelector('#signup-cancel').addEventListener('click', ()=>{ location.hash = '/home'; });
+        <form id="signup-form" class="auth-form">
+          <div class="field">
+            <label>Display name</label>
+            <input name="name" required />
+          </div>
 
-		container.querySelector('#signup-btn').addEventListener('click', async (e)=>{
-			e.preventDefault();
-			err.style.display='none';
-			const name = form.name.value.trim();
-			const email = form.email.value.trim();
-			const password = form.password.value;
-			try{
-				// try server signup first
-				try{
-					const res = await fetch('/api/signup', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({ name, email, password }) });
-					if (!res.ok) throw new Error((await res.json()).error || 'Signup failed');
-				} catch(err){
-					signup({ name, email, password });
-				}
-				window.dispatchEvent(new CustomEvent('auth:changed'));
-				location.hash = '/home';
-			} catch(err){
-				err.textContent = err.message || String(err);
-				err.style.display = 'block';
-			}
-		});
+          <div class="field">
+            <label>Email</label>
+            <input name="email" type="email" required />
+          </div>
+
+          <div class="field">
+            <label>Password</label>
+            <input name="password" type="password" required />
+          </div>
+
+          <div class="dob-row">
+            <input name="dob-day" placeholder="Day" />
+            <input name="dob-month" placeholder="Month" />
+            <input name="dob-year" placeholder="Year" />
+          </div>
+
+          <button id="signup-btn" class="btn-primary">
+            Create account
+          </button>
+
+          <button id="signup-cancel" type="button" class="btn-secondary">
+            Cancel
+          </button>
+
+          <div class="auth-note">
+            By continuing, you agree to our
+            <a href="#">Terms</a> & <a href="#">Privacy Policy</a>.
+          </div>
+
+          <div id="signup-err" class="auth-error" style="display:none"></div>
+        </form>
+      </div>
+    </section>
+  `;
+
+  const form = container.querySelector('#signup-form');
+  const errBox = container.querySelector('#signup-err');
+
+  container
+    .querySelector('#signup-cancel')
+    .addEventListener('click', () => {
+      location.hash = '/home';
+    });
+
+  container
+    .querySelector('#signup-btn')
+    .addEventListener('click', async (e) => {
+      e.preventDefault();
+      errBox.style.display = 'none';
+
+      const name = form.name.value.trim();
+      const email = form.email.value.trim();
+      const password = form.password.value;
+
+      try {
+        try {
+          const res = await fetch('/api/signup', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ name, email, password })
+          });
+
+          if (!res.ok) {
+            const data = await res.json();
+            throw new Error(data.error || 'Signup failed');
+          }
+        } catch {
+          signup({ name, email, password });
+        }
+
+        window.dispatchEvent(new CustomEvent('auth:changed'));
+        location.hash = '/home';
+
+      } catch (e) {
+        errBox.textContent = e.message || String(e);
+        errBox.style.display = 'block';
+      }
+    });
 }
