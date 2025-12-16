@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Study Wiki | Dashboard</title>
 
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
   <link rel="stylesheet" href="style.css">
 </head>
 
@@ -15,11 +21,11 @@
     <div class="brand">Study Wiki</div>
 
     <nav class="nav">
-      <a class="nav-item active" href="#/">Home</a>
-      <a class="nav-item" href="#/notes">Notes</a>
-      <a class="nav-item" href="#/library">Library</a>
-      <a class="nav-item" href="#/projects">Projects</a>
-      <a class="nav-item" href="#/profile">Profile</a>
+      <a class="nav-item active" href="#/home" data-page="home">Home</a>
+      <a class="nav-item" href="#/notes" data-page="notes">Notes</a>
+      <a class="nav-item" href="#/library" data-page="library">Library</a>
+      <a class="nav-item" href="#/projects" data-page="projects">Projects</a>
+      <a class="nav-item" href="#/profile" data-page="profile">Profile</a>
     </nav>
 
     <div class="sidebar-footer">v1.0</div>
@@ -30,13 +36,16 @@
 
     <!-- Top Bar -->
     <header class="topbar">
+      <!-- Centered Search -->
       <div class="search search-center">
-  <input
-    type="search"
-    aria-label="Search"
-  />
-</div>
+        <input
+          type="search"
+          aria-label="Search"
+          placeholder=""
+        />
+      </div>
 
+      <!-- Actions -->
       <div class="top-actions">
         <button class="btn" id="new-note-btn">New Note</button>
         <img
@@ -52,17 +61,17 @@
     <main class="content">
 
       <!-- SECTION: Overview / Hero -->
-      <section class="section section-overview">
-        <!-- content injected later -->
+      <section class="section section-overview" id="overview-section">
+        <!-- home.js injects hero / overview here -->
       </section>
 
       <!-- SECTION: Primary Workspace -->
-      <section class="section section-main">
-        <!-- notes grid / dashboards go here -->
+      <section class="section section-main" id="page-root">
+        <!-- router.js mounts pages here -->
       </section>
 
       <!-- SECTION: Secondary Panels -->
-      <section class="section section-secondary">
+      <section class="section section-secondary" id="secondary-section">
         <!-- pinned / activity / stats later -->
       </section>
 
