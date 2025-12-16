@@ -1,5 +1,5 @@
 import Home from "./pages/home.js";
-import Notes from "./pages/notes.js";
+import Notes from "./pages/feature/notes.js";
 import Library from "./pages/library.js";
 import Projects from "./pages/Projects.js";
 import Setting from "./pages/setting.js";
