@@ -6,6 +6,9 @@ import Moderator from "./pages/feature/moderator.js";
 import Library from "./pages/library.js";
 import Projects from "./pages/Projects.js";
 import Setting from "./pages/setting.js";
+import Blocky from "./pages/blocky.js";
+import Signup from "./pages/feature/signup.js";
+import Banned from "./pages/feature/banned.js";
 
 const routes = {
   "/home": Home,
@@ -13,7 +16,10 @@ const routes = {
   "/library": Library,
   "/projects": Projects,
   "/auth": AuthPage,
+  "/signup": Signup,
   "/moderator": Moderator,
+  "/blocky": Blocky,
+  "/banned": Banned,
   "/setting": Setting,
 };
 

@@ -80,6 +80,31 @@ export function currentUser() {
   return getCurrentUser();
 }
 
+// Lift ban for a user by email (immediate unban)
+export function unbanUser(email){
+  const users = getUsers();
+  const idx = users.findIndex(u => u.email === email);
+  if (idx === -1) throw new Error('User not found');
+  users[idx].banned = false;
+  delete users[idx].banUntil;
+  delete users[idx].banReason;
+  updateUsers(users);
+  return users[idx];
+}
+
+// Reset a user's display name (username)
+export function resetUsername(email, newName){
+  const users = getUsers();
+  const idx = users.findIndex(u => u.email === email);
+  if (idx === -1) throw new Error('User not found');
+  users[idx].name = sanitizeText(newName || '');
+  updateUsers(users);
+  // refresh session if current user
+  const cur = getCurrentUser();
+  if (cur && cur.email === email) setCurrentUser({ id: users[idx].id, name: users[idx].name, email: users[idx].email });
+  return users[idx];
+}
+
 export function changePassword(email, oldPassword, newPassword){
   const users = getUsers();
   const idx = users.findIndex(u => u.email === email && u.password === oldPassword);
