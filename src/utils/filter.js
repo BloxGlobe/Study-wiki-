@@ -1,5 +1,5 @@
 const BAD_WORDS = [
-  'badword','idiot','darn','fuck','fucker','shit','bitch','sexy','sex','bitches','motherfucker','ass','sexyass','67'
+  'dick','good boy','gay','gayass','fuck','fucker','shit','bitch','sexy','sex','bitches','motherfucker','ass','sexyass','67','bish','porn','anus licker','anus','badass',''
 ];
 
 export function containsBadWords(text){
