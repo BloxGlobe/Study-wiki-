@@ -179,11 +179,12 @@ body::before{
 }
 
 .content{
-  padding:40px;
+  padding:12px 40px 40px 40px; 
   position:relative;
 }
 
 .section{
+  margin-top:12px; 
   margin-bottom:42px;
   min-height:120px;
 }
