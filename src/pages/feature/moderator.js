@@ -1,6 +1,6 @@
 import { getAllNotes, updateNotes } from "../../utils/storage.js";
 import { getUsers, updateUsers } from "../../utils/storage.js";
-import { sanitizeText } from "../../utils/filter.js";
+import { sanitizeText, containsBadWords } from "../../utils/filter.js";
 
 export default function Moderator(container) {
   ensureModeratorCSS();

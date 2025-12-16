@@ -1,7 +1,7 @@
 import { getAllNotes, saveNote, updateNotes, getUsers, updateUsers } from "../../utils/storage.js";
 import { sanitizeText, containsBadWords } from "../../utils/filter.js";
 import { setCurrentUser } from "../../modules/session.js";
-import { sanitizeText } from "../../utils/filter.js";
+import { showModal } from "../../components/Modal.js";
 import { currentUser } from "../../modules/auth.js";
 
 function renderNoteCard(note) {
