@@ -5,48 +5,42 @@ import Signup from "./pages/signup.js";
 import Notes from "./pages/notes.js";
 import Editor from "./pages/editor.js";
 import Profile from "./pages/profile.js";
+import Library from "./pages/library.js";
 import NotFound from "./pages/404.js";
 
 const routes = {
+  "": Home,
   home: Home,
-  search: Notes,
-  library: Notes,
+  notes: Notes,
+  library: Library,
   projects: Editor,
   login: Login,
   signup: Signup,
   profile: Profile
 };
 
-const app = document.getElementById("app");
-const title = document.getElementById("page-title");
+const app = document.querySelector(".content");
 
 export function initRouter() {
-  const hash = location.hash.replace("#/", "") || "home";
-  loadRoute(hash);
-
-  window.addEventListener("hashchange", () => {
-    const route = location.hash.replace("#/", "") || "home";
-    loadRoute(route);
-  });
+  window.addEventListener("hashchange", handleRoute);
+  handleRoute(); // initial load
 }
 
-export function navigate(route) {
-  location.hash = `/${route}`;
-}
-
-function loadRoute(route) {
+function handleRoute() {
+  const route = location.hash.replace("#/", "");
   const page = routes[route] || NotFound;
 
-  // Clear existing content
-  app.innerHTML = "";
+  if (!app) return;
 
-  // Render page
+  app.innerHTML = "";
   page(app);
 
-  // Update title
-  title.textContent = capitalize(route);
+  updateActiveNav(route);
 }
 
-function capitalize(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
+function updateActiveNav(route) {
+  document.querySelectorAll(".nav-item").forEach(link => {
+    const href = link.getAttribute("href")?.replace("#/", "");
+    link.classList.toggle("active", href === route);
+  });
 }
