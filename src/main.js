@@ -23,7 +23,8 @@ function createAuthButton() {
       signOut();
       refresh();
     } else {
-      requireAuth();
+      // navigate to the full auth page instead of opening modal
+      location.hash = "/auth";
     }
   });
 

@@ -1,5 +1,6 @@
 import Home from "./pages/home.js";
 import Notes from "./pages/feature/notes.js";
+import AuthPage from "./pages/feature/auth.js";
 import Library from "./pages/library.js";
 import Projects from "./pages/Projects.js";
 import Setting from "./pages/setting.js";
@@ -9,6 +10,7 @@ const routes = {
   "/notes": Notes,
   "/library": Library,
   "/projects": Projects,
+  "/auth": AuthPage,
   "/setting": Setting,
 };
 
