@@ -73,7 +73,7 @@ export default function Moderator(container) {
       render();
     }
   });
-  container.querySelector('#auto-moderate').addEventListener('click', () => {
+    container.querySelector('#auto-moderate').addEventListener('click', () => {
     // scan users and notes and ban anyone with bad words
     const users = getUsers();
     const notes = getAllNotes();
@@ -81,6 +81,8 @@ export default function Moderator(container) {
     users.forEach(u => {
       if (containsBadWords(u.name) || containsBadWords(u.email)) {
         u.banned = true;
+        u.banUntil = Date.now() + (24*60*60*1000);
+        u.banReason = 'Automated moderation';
         changed = true;
       }
     });
@@ -89,6 +91,8 @@ export default function Moderator(container) {
         const uidx = users.findIndex(x => x.id === n.userId);
         if (uidx !== -1) {
           users[uidx].banned = true;
+          users[uidx].banUntil = Date.now() + (24*60*60*1000);
+          users[uidx].banReason = 'Automated moderation: note content';
           changed = true;
         }
       }

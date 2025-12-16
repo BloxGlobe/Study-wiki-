@@ -14,85 +14,85 @@ function ensureAuthCSS() {
 export default function AuthPage(container) {
   ensureAuthCSS();
   container.innerHTML = `
-    <section class="section">
-      <h2>Account</h2>
-      <div class="card">
-        <div id="auth-root">
-          <div style="display:flex;gap:12px;flex-wrap:wrap">
-            <button id="open-login" class="btn-secondary">Login</button>
-            <button id="open-signup" class="btn-primary">Create account</button>
-          </div>
-          <p class="auth-note" style="margin-top:12px">Opening the full auth page lets you create an account. After creation you'll be redirected back.</p>
+    <section class="section auth-page">
+      <h2>Sign up / Sign in</h2>
+      <div class="card auth-card">
+        <div class="auth-tabs">
+          <button id="tab-signup" class="btn-primary">Sign Up</button>
+          <button id="tab-login" class="btn-secondary">Log In</button>
+        </div>
+
+        <div id="auth-forms">
+          <form id="signup-form" class="auth-form-full">
+            <input name="username" placeholder="Username" required />
+            <input name="email" type="email" placeholder="Email" required />
+            <input name="password" type="password" placeholder="Password" required />
+            <div class="policy">By signing up you agree to the <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>.</div>
+            <div style="display:flex;gap:8px;margin-top:12px"><button id="signup-btn" class="btn-primary">Sign Up</button></div>
+            <div id="signup-err" class="auth-error" style="display:none;margin-top:8px"></div>
+          </form>
+
+          <form id="login-form" class="auth-form-full" style="display:none">
+            <input name="email" type="email" placeholder="Email" required />
+            <input name="password" type="password" placeholder="Password" required />
+            <div style="display:flex;gap:8px;margin-top:12px"><button id="login-btn" class="btn-primary">Log In</button></div>
+            <div id="login-err" class="auth-error" style="display:none;margin-top:8px"></div>
+          </form>
         </div>
       </div>
     </section>
   `;
 
-  const openLogin = container.querySelector("#open-login");
-  const openSignup = container.querySelector("#open-signup");
+  const tabSignup = container.querySelector('#tab-signup');
+  const tabLogin = container.querySelector('#tab-login');
+  const signupForm = container.querySelector('#signup-form');
+  const loginForm = container.querySelector('#login-form');
+  const signupErr = container.querySelector('#signup-err');
+  const loginErr = container.querySelector('#login-err');
 
-  openLogin.addEventListener("click", () => openForm("login"));
-  openSignup.addEventListener("click", () => openForm("signup"));
+  tabSignup.addEventListener('click', () => { signupForm.style.display='block'; loginForm.style.display='none'; });
+  tabLogin.addEventListener('click', () => { signupForm.style.display='none'; loginForm.style.display='block'; });
 
-  function openForm(mode) {
-    const form = document.createElement("div");
-    form.className = "auth-form";
-    form.innerHTML = `
-      <h3>${mode === "login" ? "Login to your account" : "Create an account"}</h3>
-      <input name="name" type="text" placeholder="Full name" style="display:${mode==='signup'?'block':'none'}" />
-      <input name="email" type="email" placeholder="Email" />
-      <input name="password" type="password" placeholder="Password" />
-      <div class="auth-actions">
-        <button class="btn-secondary" id="cancel">Cancel</button>
-        <button class="btn-primary" id="submit">${mode==='login'? 'Login':'Sign up'}</button>
-      </div>
-      <div class="auth-error" id="err" style="display:none"></div>
-    `;
-
-    showModal(form);
-
-    form.querySelector("#cancel").addEventListener("click", () => {
-      document.querySelector('.app-modal')?.dispatchEvent(new Event('click'));
-    });
-
-    form.querySelector("#submit").addEventListener("click", async () => {
-      const name = form.querySelector('[name="name"]')?.value.trim();
-      const email = form.querySelector('[name="email"]')?.value.trim();
-      const password = form.querySelector('[name="password"]')?.value || "";
-      const errEl = form.querySelector('#err');
-      errEl.style.display = 'none';
+  container.querySelector('#signup-btn').addEventListener('click', async (e) => {
+    e.preventDefault();
+    signupErr.style.display='none';
+    const name = signupForm.username.value.trim();
+    const email = signupForm.email.value.trim();
+    const password = signupForm.password.value;
+    try {
+      // try server signup first
       try {
-        if (mode === 'signup') {
-          // try server signup if available, fallback to client storage
-          try {
-            const res = await fetch('/api/signup', { method: 'POST', headers: {'content-type':'application/json'}, body: JSON.stringify({ name, email, password }) });
-            if (!res.ok) throw new Error((await res.json()).error || 'Signup failed');
-          } catch (e) {
-            // server not available - use client-side
-            signup({ name, email, password });
-          }
-        } else {
-          try {
-            const res = await fetch('/api/login', { method: 'POST', headers: {'content-type':'application/json'}, body: JSON.stringify({ email, password }) });
-            if (!res.ok) throw new Error((await res.json()).error || 'Login failed');
-            const body = await res.json();
-            // set session locally
-            // auth.login uses local storage; call it to keep client behaviour
-            login({ email, password });
-          } catch (e) {
-            // fallback to client
-            login({ email, password });
-          }
-        }
-        // notify and redirect to home
-        try { window.dispatchEvent(new CustomEvent('auth:changed')); } catch(e){}
-        location.hash = '/home';
-        // close modal by simulating click on overlay
-        document.querySelector('.app-modal')?.dispatchEvent(new Event('click'));
+        const res = await fetch('/api/signup', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({ name, email, password }) });
+        if (!res.ok) throw new Error((await res.json()).error || 'Signup failed');
       } catch (err) {
-        errEl.textContent = err.message || String(err);
-        errEl.style.display = 'block';
+        // fallback to client
+        signup({ name, email, password });
       }
-    });
-  }
+      window.dispatchEvent(new CustomEvent('auth:changed'));
+      location.hash = '/home';
+    } catch (err) {
+      signupErr.textContent = err.message || String(err);
+      signupErr.style.display = 'block';
+    }
+  });
+
+  container.querySelector('#login-btn').addEventListener('click', async (e) => {
+    e.preventDefault();
+    loginErr.style.display='none';
+    const email = loginForm.email.value.trim();
+    const password = loginForm.password.value;
+    try {
+      try {
+        const res = await fetch('/api/login', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({ email, password }) });
+        if (!res.ok) throw new Error((await res.json()).error || 'Login failed');
+      } catch (err) {
+        login({ email, password });
+      }
+      window.dispatchEvent(new CustomEvent('auth:changed'));
+      location.hash = '/home';
+    } catch (err) {
+      loginErr.textContent = err.message || String(err);
+      loginErr.style.display = 'block';
+    }
+  });
 }

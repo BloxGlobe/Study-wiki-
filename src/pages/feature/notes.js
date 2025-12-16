@@ -81,10 +81,15 @@ export default function Notes(container) {
 			const idx = users.findIndex(u => u.id === user.id);
 			if (idx !== -1) {
 				users[idx].banned = true;
+				users[idx].banUntil = Date.now() + (24*60*60*1000);
+				users[idx].banReason = 'Automated moderation: offensive content in note';
 				updateUsers(users);
 				// clear session
 				setCurrentUser(null);
-				alert('Your account has been banned due to policy violations.');
+				try {
+					showModal(`<div style="max-width:560px"><h3>Account banned</h3><p>Your account was banned due to policy violations in a note.</p><p><strong>Banned until:</strong> ${new Date(users[idx].banUntil).toString()}</p><div style="margin-top:12px"><button id="ban-ok2" class="btn-primary">OK</button></div></div>`);
+					document.querySelector('#ban-ok2')?.addEventListener('click', () => { const m = document.querySelector('.app-modal'); if (m) m.dispatchEvent(new Event('click')); });
+				} catch(e){}
 			}
 		}
 		container.querySelector('#note-title').value = '';
