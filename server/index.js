@@ -76,19 +76,22 @@ app.put('/api/notes/:id', (req,res)=>{
   res.json(notes[idx]);
 });
 
-// Proxy endpoint to OpenAI. Requires OPENAI_API_KEY in env.
-app.post('/api/ai', async (req,res)=>{
+// Proxy endpoint to OpenAI Responses API. Requires OPENAI_API_KEY in env.
+app.post('/api/ai', async (req, res) => {
   const key = process.env.OPENAI_API_KEY;
   if (!key) return res.status(500).json({ error: 'Server not configured with OPENAI_API_KEY' });
   const { prompt, options } = req.body || {};
   if (!prompt) return res.status(400).json({ error: 'prompt required' });
   try {
+    const model = (options && options.model) || 'gpt-4o-mini';
+    const max_tokens = (options && options.max_tokens) || 400;
     const payload = {
-      model: (options && options.model) || 'gpt-4o-mini',
-      messages: [{ role: 'user', content: String(prompt) }],
-      max_tokens: (options && options.max_tokens) || 400
+      model,
+      input: String(prompt),
+      max_output_tokens: max_tokens
     };
-    const r = await fetch('https://api.openai.com/v1/chat/completions', {
+
+    const r = await fetch('https://api.openai.com/v1/responses', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
@@ -97,6 +100,7 @@ app.post('/api/ai', async (req,res)=>{
       body: JSON.stringify(payload)
     });
     const data = await r.json();
+    // forward the API response directly
     res.status(r.status).json(data);
   } catch (err) {
     res.status(500).json({ error: String(err) });
