@@ -294,3 +294,77 @@ html{
   .card{ padding:16px; }
   .nav-item{ padding:12px 10px; }
 }
+
+.auth-page{
+  min-height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:32px 24px;
+}
+
+.auth-card,
+.rbx-signup-card{
+  width:100%;
+  max-width:520px;
+  margin:0 auto;
+}
+
+.app-modal-inner{
+  min-width:unset;
+  width:100%;
+  max-width:520px;
+}
+
+.signup-form,
+.auth-form{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+.signup-form label,
+.auth-form label{
+  font-size:13px;
+  color:var(--soft);
+}
+
+.dob-row{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:10px;
+}
+
+.signup-cta button,
+.auth-form button{
+  width:100%;
+}
+
+.rbx-signup-title,
+.auth-hero h1{
+  font-size:22px;
+  font-weight:600;
+}
+
+.signup-note,
+.auth-note{
+  text-align:center;
+  line-height:1.5;
+}
+
+/* Mobile improvements */
+@media (max-width:520px){
+  .auth-page{
+    padding:20px 14px;
+  }
+
+  .rbx-signup-card,
+  .auth-card{
+    padding:20px;
+    border-radius:12px;
+  }
+
+  .dob-row{
+    grid-template-columns:1fr;
+  }
+}
