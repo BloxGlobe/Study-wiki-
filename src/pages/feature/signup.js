@@ -13,8 +13,8 @@ export default function Signup(container) {
 		  <div class="rbx-signup-wrapper">
 		    <div class="rbx-signup-card">
 		      <div class="rbx-signup-hero">
-		        <img src="https://images.rbxcdn.com/fc3f3e3158fc20ebb5ccc972064ebfe6.png" alt="logo">
-		        <div class="rbx-signup-title">Create your Roblox account</div>
+		        <img src="https://imgs.search.brave.com/EQ_rhM1s2iLSsWoJ9gBthcDBjU3HyfukRJ8poeRBCcs/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMudmVjdGVlenku/Y29tL3N5c3RlbS9y/ZXNvdXJjZXMvdGh1/bWJuYWlscy8wMzYv/NzA3LzEzNi9zbWFs/bC9zdHVkeWluZy1s/aW5lLWljb24taXNv/bGF0ZWQtb24td2hp/dGUtYmFja2dyb3Vu/ZC1yZWFkaW5nLWJv/b2stbGluZS1pY29u/LXZlY3Rvci5qcGc" alt="logo">
+		        <div class="rbx-signup-title">Create your Study account</div>
 		      </div>
 		      <form id="signup-form" class="signup-form">
 		        <div class="field"><label>Display name</label><input name="name" placeholder="Display name" required /></div>
