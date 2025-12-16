@@ -1,69 +1,77 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Study Wiki — Dashboard</title>
-    <link rel="stylesheet" href="style.css">
-  </head>
-  <body class="app-root">
-    <aside class="sidebar">
-      <div class="brand">Study Wiki</div>
-      <nav class="nav">
-        <a class="nav-item active" href="#">Home</a>
-        <a class=></a>
-        <a class="nav-item" href="#library">Library</a>
-        <a class="nav-item" href="#projects">Projects</a>
-        <a class="nav-item" href="#notes">Notes</a>
-        <a class="nav-item" href="#profile">Profile</a>
-      </nav>
-      <div class="sidebar-footer">v1.0</div>
-    </aside>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Study Wiki — Dashboard</title>
 
-    <div class="main-area">
-      <header class="topbar">
-        <div class="search">🔍 <input placeholder="Search notes, subjects, tags..."/></div>
-        <div class="top-actions">
-          <button class="btn">New Note</button>
-          <img class="avatar" src="src/assets/avatar.png" alt="avatar" onerror="this.style.display='none'"/>
-        </div>
-      </header>
+  <link rel="stylesheet" href="style.css">
+</head>
 
-      <main class="content">
-        <section class="overview">
-          <div class="card">
-            <h3>Quick Stats</h3>
-            <div class="stats-grid">
-              <div class="stat">Notes<br/><strong>128</strong></div>
-              <div class="stat">Subjects<br/><strong>12</strong></div>
-              <div class="stat">Tags<br/><strong>34</strong></div>
-            </div>
-          </div>
+<body class="app-root">
 
-          <div class="card">
-            <h3>Recent Notes</h3>
-            <ul class="recent-list">
-              <li>Linear Algebra — Matrix Properties</li>
-              <li>Operating Systems — Scheduling</li>
-              <li>Modern Web — Routing Patterns</li>
-            </ul>
-          </div>
-        </section>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="brand">Study Wiki</div>
 
-        <section class="panel-grid">
-          <div class="panel card">
-            <h3>Pinned</h3>
-            <div class="placeholder">Pinned notes will appear here.</div>
-          </div>
+    <nav class="nav">
+      <a class="nav-item active" href="#/">Home</a>
+      <a class="nav-item" href="#/notes">Notes</a>
+      <a class="nav-item" href="#/library">Library</a>
+      <a class="nav-item" href="#/projects">Projects</a>
+      <a class="nav-item" href="#/profile">Profile</a>
+    </nav>
 
-          <div class="panel card">
-            <h3>Activity</h3>
-            <div class="placeholder">Activity feed</div>
-          </div>
-        </section>
-      </main>
-    </div>
+    <div class="sidebar-footer">v1.0</div>
+  </aside>
 
-    <script src="src/main.js"></script>
-  </body>
+  <!-- Main Area -->
+  <div class="main-area">
+
+    <!-- Top Bar -->
+    <header class="topbar">
+      <div class="search">
+        🔍
+        <input
+          type="search"
+          placeholder="Search notes, subjects, tags…"
+          aria-label="Search"
+        />
+      </div>
+
+      <div class="top-actions">
+        <button class="btn" id="new-note-btn">New Note</button>
+        <img
+          class="avatar"
+          src="src/assets/avatar.png"
+          alt="User avatar"
+          onerror="this.style.display='none'"
+        />
+      </div>
+    </header>
+
+    <!-- Page Content -->
+    <main class="content">
+
+      <!-- SECTION: Overview / Hero -->
+      <section class="section section-overview">
+        <!-- content injected later -->
+      </section>
+
+      <!-- SECTION: Primary Workspace -->
+      <section class="section section-main">
+        <!-- notes grid / dashboards go here -->
+      </section>
+
+      <!-- SECTION: Secondary Panels -->
+      <section class="section section-secondary">
+        <!-- pinned / activity / stats later -->
+      </section>
+
+    </main>
+  </div>
+
+  <!-- App Entry -->
+  <script type="module" src="src/main.js"></script>
+</body>
 </html>
