@@ -85,38 +85,20 @@ body::before{
   color:#fff;
 }
 
-/* Visual grouping: add lightweight section headings and separators using positional selectors
-   (keeps HTML unchanged while improving scanability). Adjust the indices if you reorder nav items.) */
-.nav-item:nth-child(1)::before{
-  content: "Main";
-  display:block;
-  font-size:11px;
-  color:var(--muted);
-  text-transform:uppercase;
-  letter-spacing:0.14em;
-  margin-bottom:8px;
-  font-weight:700;
-}
-.nav-item:nth-child(4){
-  margin-bottom:14px; /* separate first block */
-  padding-bottom:18px;
-  border-bottom:1px solid var(--line);
-}
-.nav-item:nth-child(5)::before{
-  content: "Workspace";
-  display:block;
+/* Group headings inside the nav for explicit organization */
+.nav-heading{
   font-size:11px;
   color:var(--muted);
   text-transform:uppercase;
   letter-spacing:0.12em;
-  margin-bottom:8px;
+  margin:6px 4px 6px 4px;
   font-weight:700;
 }
-.nav-item:nth-child(8){
-  margin-top:10px; /* small gap before tools/utility area */
-  padding-top:10px;
-  border-top:1px solid var(--line);
-}
+
+/* Groups: allow visual separation when needed */
+.nav-group{ display:flex; flex-direction:column; gap:10px }
+.nav-group + .nav-divider{ margin:14px 0 }
+
 
 .nav-divider{
   height:1px;
