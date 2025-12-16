@@ -1,4 +1,4 @@
-import { generateText } from "../modules/aiAssistant.js";
+import { generateText } from "../modules/ai/index.js";
 
 function ensureBlockyCSS(){
   const href = 'src/auth.css';

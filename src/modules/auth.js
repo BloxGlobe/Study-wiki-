@@ -21,13 +21,27 @@ export function signup({ name, email, password }) {
     user.banUntil = Date.now() + BAN_DURATION_MS;
     user.banReason = 'Automated moderation: offensive display name or email';
     saveUser(user);
-    // show ban modal to inform user
+    // show ban modal to inform user (modernized)
     try {
-      showModal(`<div style="max-width:560px"><h3>Account banned</h3><p>Your account was automatically banned due to policy violations.</p><p><strong>Reason:</strong> ${user.banReason}</p><p><strong>Banned until:</strong> ${new Date(user.banUntil).toString()}</p><div style="margin-top:12px;display:flex;gap:8px"><button id="ban-ok" class="btn-primary">OK</button></div></div>`);
-      document.querySelector('#ban-ok')?.addEventListener('click', () => {
-        // close modal
-        const m = document.querySelector('.app-modal'); if (m) m.dispatchEvent(new Event('click'));
-      });
+      const untilStr = new Date(user.banUntil).toString();
+      const remaining = Math.max(0, Number(user.banUntil) - Date.now());
+      const mins = Math.ceil(remaining/60000);
+      const html = `
+        <div style="max-width:560px">
+          <h3>Account temporarily suspended</h3>
+          <p style="margin-top:6px">Your account was automatically suspended by our moderation system.</p>
+          <p style="margin-top:8px"><strong>Reason:</strong> ${user.banReason}</p>
+          <p style="margin-top:6px"><strong>Suspended until:</strong> ${untilStr}</p>
+          <p style="margin-top:6px;color:var(--muted)">Estimated time remaining: ${mins} minute(s)</p>
+          <div style="display:flex;gap:8px;margin-top:12px">
+            <button id="ban-view" class="btn-secondary">View details</button>
+            <button id="ban-close" class="btn-primary">Close</button>
+          </div>
+        </div>
+      `;
+      showModal(html);
+      document.querySelector('#ban-close')?.addEventListener('click', () => { const m = document.querySelector('.app-modal'); if (m) m.dispatchEvent(new Event('click')); });
+      document.querySelector('#ban-view')?.addEventListener('click', () => { const m = document.querySelector('.app-modal'); if (m) m.dispatchEvent(new Event('click')); location.hash = '/banned'; });
     } catch (e) {}
     // inform caller
     throw new Error('Account auto-banned due to policy - see notice');
@@ -59,10 +73,24 @@ export function login({ email, password }) {
       // show modal with ban info
       try {
         const until = user.banUntil ? new Date(Number(user.banUntil)).toString() : 'unknown';
-        showModal(`<div style="max-width:560px"><h3>Account banned</h3><p>Your account is banned.</p><p><strong>Reason:</strong> ${user.banReason || 'policy violation'}</p><p><strong>Banned until:</strong> ${until}</p><div style="margin-top:12px;display:flex;gap:8px"><button id="ban-ok" class="btn-primary">OK</button></div></div>`);
-        document.querySelector('#ban-ok')?.addEventListener('click', () => {
-          const m = document.querySelector('.app-modal'); if (m) m.dispatchEvent(new Event('click'));
-        });
+        const remaining = user.banUntil ? Math.max(0, Number(user.banUntil) - Date.now()) : 0;
+        const mins = Math.ceil(remaining/60000);
+        const html = `
+          <div style="max-width:560px">
+            <h3>Account temporarily suspended</h3>
+            <p style="margin-top:6px">Your account is suspended and cannot sign in right now.</p>
+            <p style="margin-top:8px"><strong>Reason:</strong> ${user.banReason || 'policy violation'}</p>
+            <p style="margin-top:6px"><strong>Suspended until:</strong> ${until}</p>
+            <p style="margin-top:6px;color:var(--muted)">Estimated time remaining: ${mins} minute(s)</p>
+            <div style="display:flex;gap:8px;margin-top:12px">
+              <button id="ban-view" class="btn-secondary">View ban</button>
+              <button id="ban-close" class="btn-primary">Close</button>
+            </div>
+          </div>
+        `;
+        showModal(html);
+        document.querySelector('#ban-close')?.addEventListener('click', () => { const m = document.querySelector('.app-modal'); if (m) m.dispatchEvent(new Event('click')); });
+        document.querySelector('#ban-view')?.addEventListener('click', () => { const m = document.querySelector('.app-modal'); if (m) m.dispatchEvent(new Event('click')); location.hash = '/banned'; });
       } catch (e) {}
       throw new Error('This account is banned');
     }

@@ -96,3 +96,33 @@
   .auth-actions{ flex-direction:column-reverse; align-items:stretch; }
   .btn-primary, .btn-secondary{ width:100%; }
 }
+
+/* Roblox-like centered auth card */
+.rbx-auth-wrapper{
+  min-height:60vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:36px 12px;
+}
+.rbx-auth-card{
+  background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+  border:1px solid rgba(255,255,255,0.04);
+  padding:28px;
+  width:420px;
+  border-radius:12px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.6);
+}
+.rbx-logo{ display:block; text-align:center; margin-bottom:12px }
+.rbx-logo img{ height:34px }
+.rbx-auth-title{ text-align:center; font-weight:700; margin-bottom:12px; font-size:18px; color:var(--muted) }
+.auth-form .field{ margin-bottom:10px }
+.auth-form .field label{ display:block; font-size:12px; color:var(--soft); margin-bottom:6px }
+.auth-form .field input{ width:100%; box-sizing:border-box }
+.auth-aux{ font-size:13px; color:var(--muted); margin-top:10px; text-align:center }
+.auth-switch{ text-align:center; margin-top:12px }
+.auth-switch a{ color:var(--accent); text-decoration:none; font-weight:600 }
+
+@media (max-width:520px){
+  .rbx-auth-card{ width:95%; padding:20px }
+}

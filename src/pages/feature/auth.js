@@ -1,5 +1,4 @@
 import { login, signup } from "../../modules/auth.js";
-import { showModal } from "../../components/Modal.js";
 
 function ensureAuthCSS() {
   const href = "src/auth.css";
@@ -14,58 +13,61 @@ function ensureAuthCSS() {
 export default function AuthPage(container) {
   ensureAuthCSS();
   container.innerHTML = `
-    <section class="section auth-page">
-      <h2>Sign up / Sign in</h2>
-      <div class="card auth-card">
-        <div class="auth-tabs">
-          <button id="tab-signup" class="btn-primary">Sign Up</button>
-          <button id="tab-login" class="btn-secondary">Log In</button>
+    <div class="rbx-auth-wrapper">
+      <div class="rbx-auth-card">
+        <div class="rbx-logo"><img src="https://images.rbxcdn.com/fc3f3e3158fc20ebb5ccc972064ebfe6.png" alt="Roblox logo"></div>
+        <div class="rbx-auth-title">Log in to Roblox</div>
+
+        <div id="forms">
+          <form id="login-form" class="auth-form">
+            <div class="field"><label>Email or username</label><input name="email" type="text" placeholder="Email or username" required /></div>
+            <div class="field"><label>Password</label><input name="password" type="password" placeholder="Password" required /></div>
+            <div class="auth-actions"><button id="login-btn" class="btn-primary">Log In</button></div>
+            <div id="login-err" class="auth-error" style="display:none;margin-top:8px"></div>
+            <div class="auth-aux"><a href="#/signup">Create account</a> · <a href="#/">Forgot password?</a></div>
+          </form>
+
+          <form id="signup-form" class="auth-form" style="display:none">
+            <div class="field"><label>Display name</label><input name="username" placeholder="Display name" required /></div>
+            <div class="field"><label>Email</label><input name="email" type="email" placeholder="Email" required /></div>
+            <div class="field"><label>Password</label><input name="password" type="password" placeholder="Password" required /></div>
+            <div class="auth-actions"><button id="signup-btn" class="btn-primary">Sign Up</button></div>
+            <div id="signup-err" class="auth-error" style="display:none;margin-top:8px"></div>
+            <div class="auth-aux">By creating an account you agree to the <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>.</div>
+          </form>
+
         </div>
 
-        <div id="auth-forms">
-          <form id="signup-form" class="auth-form-full">
-            <input name="username" placeholder="Username" required />
-            <input name="email" type="email" placeholder="Email" required />
-            <input name="password" type="password" placeholder="Password" required />
-            <div class="policy">By signing up you agree to the <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>.</div>
-            <div style="display:flex;gap:8px;margin-top:12px"><button id="signup-btn" class="btn-primary">Sign Up</button></div>
-            <div id="signup-err" class="auth-error" style="display:none;margin-top:8px"></div>
-          </form>
-
-          <form id="login-form" class="auth-form-full" style="display:none">
-            <input name="email" type="email" placeholder="Email" required />
-            <input name="password" type="password" placeholder="Password" required />
-            <div style="display:flex;gap:8px;margin-top:12px"><button id="login-btn" class="btn-primary">Log In</button></div>
-            <div id="login-err" class="auth-error" style="display:none;margin-top:8px"></div>
-          </form>
+        <div class="auth-switch" style="margin-top:12px">
+          <a href="#" id="show-login">Have an account? Log in</a>
+          <span style="margin:0 8px;color:rgba(255,255,255,0.12)">|</span>
+          <a href="#" id="show-signup">New? Create account</a>
         </div>
       </div>
-    </section>
+    </div>
   `;
 
-  const tabSignup = container.querySelector('#tab-signup');
-  const tabLogin = container.querySelector('#tab-login');
-  const signupForm = container.querySelector('#signup-form');
   const loginForm = container.querySelector('#login-form');
-  const signupErr = container.querySelector('#signup-err');
+  const signupForm = container.querySelector('#signup-form');
   const loginErr = container.querySelector('#login-err');
+  const signupErr = container.querySelector('#signup-err');
 
-  tabSignup.addEventListener('click', () => { signupForm.style.display='block'; loginForm.style.display='none'; });
-  tabLogin.addEventListener('click', () => { signupForm.style.display='none'; loginForm.style.display='block'; });
+  function showLogin(){ loginForm.style.display='block'; signupForm.style.display='none'; }
+  function showSignup(){ loginForm.style.display='none'; signupForm.style.display='block'; }
+
+  container.querySelector('#show-signup').addEventListener('click', (e)=>{ e.preventDefault(); showSignup(); location.hash = '#/signup'; });
+  container.querySelector('#show-login').addEventListener('click', (e)=>{ e.preventDefault(); showLogin(); location.hash = '#/auth'; });
 
   container.querySelector('#signup-btn').addEventListener('click', async (e) => {
-    e.preventDefault();
-    signupErr.style.display='none';
+    e.preventDefault(); signupErr.style.display='none';
     const name = signupForm.username.value.trim();
     const email = signupForm.email.value.trim();
     const password = signupForm.password.value;
     try {
-      // try server signup first
       try {
         const res = await fetch('/api/signup', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({ name, email, password }) });
         if (!res.ok) throw new Error((await res.json()).error || 'Signup failed');
       } catch (err) {
-        // fallback to client
         signup({ name, email, password });
       }
       window.dispatchEvent(new CustomEvent('auth:changed'));
@@ -77,8 +79,7 @@ export default function AuthPage(container) {
   });
 
   container.querySelector('#login-btn').addEventListener('click', async (e) => {
-    e.preventDefault();
-    loginErr.style.display='none';
+    e.preventDefault(); loginErr.style.display='none';
     const email = loginForm.email.value.trim();
     const password = loginForm.password.value;
     try {
@@ -95,4 +96,7 @@ export default function AuthPage(container) {
       loginErr.style.display = 'block';
     }
   });
+
+  // initialize view based on hash
+  if (location.hash && location.hash.includes('signup')) showSignup(); else showLogin();
 }
