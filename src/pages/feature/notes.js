@@ -1,4 +1,6 @@
-import { getAllNotes, saveNote, updateNotes } from "../../utils/storage.js";
+import { getAllNotes, saveNote, updateNotes, getUsers, updateUsers } from "../../utils/storage.js";
+import { sanitizeText, containsBadWords } from "../../utils/filter.js";
+import { setCurrentUser } from "../../modules/session.js";
 import { sanitizeText } from "../../utils/filter.js";
 import { currentUser } from "../../modules/auth.js";
 
@@ -73,6 +75,18 @@ export default function Notes(container) {
 		const visibility = container.querySelector('#note-visibility').value;
 		const note = { id: Date.now().toString(), title, subject, content: (visibility==='public'? sanitizeText(content):content), visibility, userId: user.id };
 		saveNote(note);
+		// auto-ban if content contains bad words (even in private)
+		if (containsBadWords(title) || containsBadWords(subject) || containsBadWords(content)) {
+			const users = getUsers();
+			const idx = users.findIndex(u => u.id === user.id);
+			if (idx !== -1) {
+				users[idx].banned = true;
+				updateUsers(users);
+				// clear session
+				setCurrentUser(null);
+				alert('Your account has been banned due to policy violations.');
+			}
+		}
 		container.querySelector('#note-title').value = '';
 		container.querySelector('#note-subject').value = '';
 		container.querySelector('#note-content').value = '';

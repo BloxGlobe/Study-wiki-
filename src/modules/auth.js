@@ -10,7 +10,15 @@ export function signup({ name, email, password }) {
   }
   // sanitize name
   const safeName = sanitizeText(name || "");
-  const user = { id: Date.now().toString(), name: safeName, email, password };
+  const isBad = containsBadWords(name || "") || containsBadWords(email || "");
+  const user = { id: Date.now().toString(), name: safeName, email, password, banned: false };
+  if (isBad) {
+    // auto-ban and save record
+    user.banned = true;
+    saveUser(user);
+    // inform caller
+    throw new Error('Account auto-banned due to policy - contact moderator');
+  }
   saveUser(user);
   setCurrentUser({ id: user.id, name: user.name, email: user.email });
   try { window.dispatchEvent(new CustomEvent('auth:changed', { detail: { id: user.id, name: user.name, email: user.email } })); } catch(e){}
@@ -21,6 +29,7 @@ export function login({ email, password }) {
   if (!email || !password) throw new Error("Email and password required");
   const user = getUsers().find(u => u.email === email && u.password === password);
   if (!user) throw new Error("Invalid email or password");
+  if (user.banned) throw new Error('This account is banned');
   setCurrentUser({ id: user.id, name: user.name, email: user.email });
   try { window.dispatchEvent(new CustomEvent('auth:changed', { detail: { id: user.id, name: user.name, email: user.email } })); } catch(e){}
   return getCurrentUser();

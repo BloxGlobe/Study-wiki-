@@ -2,3 +2,6 @@
 .mod-row strong{ font-size:14px }
 .mod-row span{ color:var(--muted) }
 @media (max-width:700px){ .mod-row{ flex-direction:column; align-items:flex-start; gap:8px } }
+
+.mod-actions{ display:flex; gap:8px }
+.mod-row .banned{ color:#ffb4b4; font-weight:600 }

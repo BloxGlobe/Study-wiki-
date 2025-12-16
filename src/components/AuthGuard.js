@@ -1,9 +1,18 @@
 import Modal, { showModal, close } from "./Modal.js";
 import { login, signup, currentUser, logout } from "../modules/auth.js";
+import { getUsers } from "../utils/storage.js";
 
 export function requireAuth(openAction) {
   const user = currentUser();
-  if (user) return true;
+  if (user) {
+    // check banned status
+    const u = getUsers().find(x => x.id === String(user.id) || x.email === user.email);
+    if (u && u.banned) {
+      alert('Your account is banned. Contact moderator.');
+      return false;
+    }
+    return true;
+  }
   // open login modal and prevent action
   openAuthModal();
   return false;

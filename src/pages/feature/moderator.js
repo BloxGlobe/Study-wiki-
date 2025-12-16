@@ -10,6 +10,7 @@ export default function Moderator(container) {
       <div class="card">
         <div style="display:flex;gap:12px;flex-wrap:wrap">
           <button id="refresh" class="btn-secondary">Refresh</button>
+          <button id="auto-moderate" class="btn-primary">Auto-moderate</button>
         </div>
         <div id="moderator-root" style="margin-top:12px"></div>
       </div>
@@ -71,6 +72,29 @@ export default function Moderator(container) {
       }
       render();
     }
+  });
+  container.querySelector('#auto-moderate').addEventListener('click', () => {
+    // scan users and notes and ban anyone with bad words
+    const users = getUsers();
+    const notes = getAllNotes();
+    let changed = false;
+    users.forEach(u => {
+      if (containsBadWords(u.name) || containsBadWords(u.email)) {
+        u.banned = true;
+        changed = true;
+      }
+    });
+    notes.forEach(n => {
+      if (containsBadWords(n.title) || containsBadWords(n.content) || containsBadWords(n.subject)) {
+        const uidx = users.findIndex(x => x.id === n.userId);
+        if (uidx !== -1) {
+          users[uidx].banned = true;
+          changed = true;
+        }
+      }
+    });
+    if (changed) updateUsers(users);
+    render();
   });
 }
 
