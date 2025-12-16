@@ -43,3 +43,9 @@ export function saveUser(user) {
   store.users.push(user);
   saveStore(store);
 }
+
+export function updateUsers(users) {
+  const store = getStore();
+  store.users = users;
+  saveStore(store);
+}

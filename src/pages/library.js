@@ -1,5 +1,6 @@
 // src/pages/library.js
 import { getAllNotes } from "../utils/storage.js";
+import { sanitizeText } from "../utils/filter.js";
 
 export default function renderLibrary(container) {
   container.innerHTML = "";
@@ -65,25 +66,31 @@ export default function renderLibrary(container) {
   function renderGrid(searchTerm = "") {
     gridSection.innerHTML = "";
 
-    let filteredNotes = notes.filter(note =>
-      note.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      (note.subject && note.subject.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      note.content.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    let filteredNotes = notes.filter(note => {
+      const title = (note.title||'').toLowerCase();
+      const subject = (note.subject||'').toLowerCase();
+      const content = (note.content||'').toLowerCase();
+      return title.includes(searchTerm.toLowerCase()) || subject.includes(searchTerm.toLowerCase()) || content.includes(searchTerm.toLowerCase());
+    });
 
     // Sort notes
+    function ts(n){
+      if (n && n.createdAt) return Number(n.createdAt)||0;
+      const idt = Number(n.id);
+      return isNaN(idt)?0:idt;
+    }
     switch (sortSelect.value) {
       case "oldest":
-        filteredNotes = filteredNotes.sort((a,b)=>a.createdAt-b.createdAt);
+        filteredNotes = filteredNotes.sort((a,b)=>ts(a)-ts(b));
         break;
       case "a-→-z":
-        filteredNotes = filteredNotes.sort((a,b)=>a.title.localeCompare(b.title));
+        filteredNotes = filteredNotes.sort((a,b)=>String(a.title||'').localeCompare(String(b.title||'')));
         break;
       case "z-→-a":
-        filteredNotes = filteredNotes.sort((a,b)=>b.title.localeCompare(a.title));
+        filteredNotes = filteredNotes.sort((a,b)=>String(b.title||'').localeCompare(String(a.title||'')));
         break;
       default: // newest
-        filteredNotes = filteredNotes.sort((a,b)=>b.createdAt-a.createdAt);
+        filteredNotes = filteredNotes.sort((a,b)=>ts(b)-ts(a));
     }
 
     if (filteredNotes.length === 0) {
@@ -128,7 +135,7 @@ export default function renderLibrary(container) {
           ">${tag}</span>`).join("")}
         </div>
         <p style="margin-top:6px; opacity:.85; font-size:14px;">
-          ${note.content.slice(0,150)}${note.content.length>150?"…":""}
+          ${sanitizeText((note.content||'')).slice(0,150)}${(note.content||'').length>150?"…":""}
         </p>
       `;
 

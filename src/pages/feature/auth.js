@@ -63,11 +63,29 @@ export default function AuthPage(container) {
       errEl.style.display = 'none';
       try {
         if (mode === 'signup') {
-          signup({ name, email, password });
+          // try server signup if available, fallback to client storage
+          try {
+            const res = await fetch('/api/signup', { method: 'POST', headers: {'content-type':'application/json'}, body: JSON.stringify({ name, email, password }) });
+            if (!res.ok) throw new Error((await res.json()).error || 'Signup failed');
+          } catch (e) {
+            // server not available - use client-side
+            signup({ name, email, password });
+          }
         } else {
-          login({ email, password });
+          try {
+            const res = await fetch('/api/login', { method: 'POST', headers: {'content-type':'application/json'}, body: JSON.stringify({ email, password }) });
+            if (!res.ok) throw new Error((await res.json()).error || 'Login failed');
+            const body = await res.json();
+            // set session locally
+            // auth.login uses local storage; call it to keep client behaviour
+            login({ email, password });
+          } catch (e) {
+            // fallback to client
+            login({ email, password });
+          }
         }
-        // redirect to home
+        // notify and redirect to home
+        try { window.dispatchEvent(new CustomEvent('auth:changed')); } catch(e){}
         location.hash = '/home';
         // close modal by simulating click on overlay
         document.querySelector('.app-modal')?.dispatchEvent(new Event('click'));

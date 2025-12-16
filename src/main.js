@@ -15,6 +15,12 @@ function createAuthButton() {
   function refresh() {
     const user = currentUser();
     authBtn.textContent = user ? `Sign out (${user.name || user.email})` : "Login / Sign up";
+    // update avatar if present
+    const avatar = document.querySelector('.topbar .avatar');
+    if (avatar) {
+      if (user && user.pfp) avatar.src = user.pfp;
+      else avatar.src = 'src/assets/avatar.png';
+    }
   }
 
   authBtn.addEventListener("click", () => {
@@ -27,6 +33,9 @@ function createAuthButton() {
       location.hash = "/auth";
     }
   });
+
+  // refresh when other parts of the app change auth state
+  window.addEventListener('auth:changed', () => refresh());
 
   topbar.insertBefore(authBtn, topbar.firstChild);
   refresh();
