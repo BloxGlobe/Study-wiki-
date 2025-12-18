@@ -1,4 +1,4 @@
-import { login, signup } from "../../modules/auth.js";
+import { login, signup } from "../../modules/auth/auth.js";
 
 function ensureAuthCSS() {
   const href = "src/auth.css";

@@ -1,5 +1,5 @@
 import { getAllNotes, updateNotes } from "../../utils/storage.js";
-import { currentUser } from "../../modules/auth.js";
+import { currentUser } from "../../modules/auth/auth.js";
 
 export default function Editor(container, id) {
   const all = getAllNotes();

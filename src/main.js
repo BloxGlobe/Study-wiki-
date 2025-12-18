@@ -2,7 +2,7 @@
 import { router } from "./router.js";
 import Modal from "./components/Modal.js";
 import { requireAuth, signOut } from "./components/AuthGuard.js";
-import { currentUser } from "./modules/auth.js";
+import { currentUser } from "./modules/auth/auth.js";
 
 function createAuthButton() {
   const topbar = document.querySelector(".topbar .top-actions");

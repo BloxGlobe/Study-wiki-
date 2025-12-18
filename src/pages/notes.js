@@ -2,7 +2,7 @@ import { getAllNotes, saveNote, updateNotes, getUsers, updateUsers } from "../ut
 import { sanitizeText, containsBadWords } from "../utils/filter.js";
 import { setCurrentUser } from "../modules/sessions/session.js";
 import { showModal } from "../components/Modal.js";
-import { currentUser } from "../modules/auth.js";
+import { currentUser } from "../modules/auth/auth.js";
 
 function renderNoteCard(note) {
 	const div = document.createElement('div');

@@ -1,4 +1,4 @@
-import { currentUser, updateProfile } from "../../../modules/auth.js";
+import { currentUser, updateProfile } from "../../../modules/auth/auth.js";
 
 export default function Profile(container) {
   const user = currentUser();

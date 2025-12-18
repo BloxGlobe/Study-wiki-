@@ -1,5 +1,5 @@
 import Modal, { showModal, close } from "./Modal.js";
-import { login, signup, currentUser, logout } from "../modules/auth.js";
+import { login, signup, currentUser, logout } from "../modules/auth/auth.js";
 import { getUsers } from "../utils/storage.js";
 
 export function requireAuth(openAction) {
