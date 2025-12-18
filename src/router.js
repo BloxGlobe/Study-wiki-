@@ -7,8 +7,8 @@ import Library from "./pages/library.js";
 import Projects from "./pages/Projects.js";
 import Setting from "./pages/setting.js";
 import Blocky from "./pages/blocky.js";
-import Signup from "./pages/feature/signup.js";
-import Banned from "./pages/feature/banned.js";
+import Signup from "./pages/modules/signup.js";
+import Banned from "./pages/feature/AutoMod/banned.js";
 
 const routes = {
   "/home": Home,

@@ -1,4 +1,4 @@
-import { getUsers } from "../../utils/storage.js";
+import { getUsers } from "../../../utils/storage.js";
 
 function ensureBannedCSS(){
   const href = 'src/banned.css';

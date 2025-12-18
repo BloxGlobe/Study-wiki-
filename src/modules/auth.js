@@ -1,5 +1,5 @@
 import { getUsers, saveUser, updateUsers } from "../utils/storage.js";
-import { setCurrentUser, getCurrentUser, clearCurrentUser } from "./session.js";
+import { setCurrentUser, getCurrentUser, clearCurrentUser } from "./sessions/session.js";
 import { sanitizeText, containsBadWords } from "../utils/filter.js";
 import { showModal } from "../components/Modal.js";
 

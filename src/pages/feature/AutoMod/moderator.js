@@ -1,6 +1,6 @@
-import { getAllNotes, updateNotes } from "../../utils/storage.js";
-import { getUsers, updateUsers } from "../../utils/storage.js";
-import { sanitizeText, containsBadWords } from "../../utils/filter.js";
+import { getAllNotes, updateNotes } from "../../../utils/storage.js";
+import { getUsers, updateUsers } from "../../../utils/storage.js";
+import { sanitizeText, containsBadWords } from "../../../utils/filter.js";
 
 const AUTO_BAN_TIME = 30 * 60 * 1000; // 30 minutes
 
