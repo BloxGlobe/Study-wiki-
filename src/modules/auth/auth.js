@@ -1,6 +1,6 @@
 import { getUsers, saveUser, updateUsers } from "../../utils/storage.js";
 import { setCurrentUser, getCurrentUser, clearCurrentUser } from "../sessions/session.js";
-import { sanitizeText, containsBadWords } from "../../utils/filter.js";
+import { sanitizeText, containsBadWords } from "../../components/filters/filter.js";
 import { showModal } from "../../components/Modal.js";
 
 const BAN_DURATION_MS = 24 * 60 * 60 * 1000; // still used elsewhere if needed

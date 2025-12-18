@@ -1,6 +1,6 @@
 // src/pages/library.js
 import { getAllNotes } from "../utils/storage.js";
-import { sanitizeText } from "../utils/filter.js";
+import { sanitizeText } from "../components/filters/filter.js";
 
 export default function renderLibrary(container) {
   container.innerHTML = "";

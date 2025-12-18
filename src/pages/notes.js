@@ -1,5 +1,5 @@
 import { getAllNotes, saveNote, updateNotes, getUsers, updateUsers } from "../utils/storage.js";
-import { sanitizeText, containsBadWords } from "../utils/filter.js";
+import { sanitizeText, containsBadWords } from "../components/filters/filter.js";
 import { setCurrentUser } from "../modules/sessions/session.js";
 import { showModal } from "../components/Modal.js";
 import { currentUser } from "../modules/auth/auth.js";
