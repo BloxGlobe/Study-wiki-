@@ -32,7 +32,8 @@ async function loadPage(page) {
   root.innerHTML = `<div class="placeholder">Loading…</div>`;
 
   try {
-    const module = await import(`./pages/${page}.js`);
+    // Fixed: correct folder case
+    const module = await import(`/src/Pages/${page}.js`);
     root.innerHTML = "";
     module.default(root);
   } catch (err) {
@@ -40,7 +41,7 @@ async function loadPage(page) {
       <div class="card">
         <h3>Page not found</h3>
         <p class="placeholder">
-          Missing file: <code>src/pages/${page}.js</code>
+          Missing file: <code>src/Pages/${page}.js</code>
         </p>
       </div>
     `;
