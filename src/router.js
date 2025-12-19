@@ -1,19 +1,9 @@
 // src/router.js
-import home, { showhome, close } from "./Pages/home.js"
-import creations, { showcreations, close } from "./Pages/creations.js"
-import library, { showlibrary, close } from "./Pages/library.js"
-import project, { showproject, close } from "./Pages/project.js"
-import settings, { showsettings, close } from "./Pages/settings.js"
-import tools, { showtools, close } from "./Pages/tools.js"
-import blocky, { showblocky, close } from "./Pages/blocky.js"
-import communities, { showcommunities, close } from "./Pages/communities.js"
-import marketplace, { showmarketplace, close } from "./Pages/marketplace.js"
-
 const routes = {
   home: "home",
   creations: "creations",
   library: "library",
-  projects: "projects",
+  projects: "project",  
   settings: "settings",
   tools: "tools",
   blocky: "blocky",
@@ -31,7 +21,7 @@ function handleRoute() {
   const target = routes[page] || routes.home;
 
   loadPage(target);
-  updateActiveLinks(target);
+  updateActiveLinks(page);  
 }
 
 async function loadPage(page) {
@@ -41,8 +31,8 @@ async function loadPage(page) {
   root.innerHTML = `<div class="placeholder">Loading page...</div>`;
 
   try {
-    // Fixed: correct folder case
-    const module = await import(`/src/Pages/${page}.js`);
+    // Use relative path from current location
+    const module = await import(`./Pages/${page}.js`);
     root.innerHTML = "";
     module.default(root);
   } catch (err) {
