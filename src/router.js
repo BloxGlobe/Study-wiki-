@@ -1,3 +1,4 @@
+// src/router.js
 import home, { showhome, close } from "./Pages/home.js"
 import creations, { showcreations, close } from "./Pages/creations.js"
 import library, { showlibrary, close } from "./Pages/library.js"
@@ -26,7 +27,7 @@ export default function initRouter() {
 }
 
 function handleRoute() {
-  const page = location.hash.replace("#/", "") || "home";
+  const page = location.hash.replace("#", "") || "home";
   const target = routes[page] || routes.home;
 
   loadPage(target);
@@ -37,7 +38,7 @@ async function loadPage(page) {
   const root = document.getElementById("page-root");
   if (!root) return;
 
-  root.innerHTML = `<div class="placeholder">Loading…</div>`;
+  root.innerHTML = `<div class="placeholder">Loading page...</div>`;
 
   try {
     // Fixed: correct folder case
@@ -63,7 +64,7 @@ function updateActiveLinks(page) {
   });
 
   document.querySelectorAll(".top-link").forEach(link => {
-    const target = link.getAttribute("href")?.replace("#/", "");
+    const target = link.getAttribute("href")?.replace("/#", "");
     link.classList.toggle("active", target === page);
   });
 }
