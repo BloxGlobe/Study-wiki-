@@ -1,15 +1,15 @@
 // src/router.js
 
 const routes = {
-  home: () => loadPage("home"),
-  creations: () => loadPage("creations"),
-  library: () => loadPage("library"),
-  projects: () => loadPage("projects"),
-  settings: () => loadPage("settings"),
-  tools: () => loadPage("tools"),
-  blocky: () => loadPage("blocky"),
-  communities: () => loadPage("communities")
-  marketplace: () => loadPage("marketplace")
+  home: "home",
+  creations: "creations",
+  library: "library",
+  projects: "projects",
+  settings: "settings",
+  tools: "tools",
+  blocky: "blocky",
+  communities: "communities",
+  marketplace: "marketplace",
 };
 
 export default function initRouter() {
@@ -18,11 +18,11 @@ export default function initRouter() {
 }
 
 function handleRoute() {
-  const hash = location.hash.replace("#/", "") || "home";
-  const route = routes[hash] || routes.home;
+  const page = location.hash.replace("#/", "") || "home";
+  const target = routes[page] || routes.home;
 
-  route();
-  updateActiveLinks(hash);
+  loadPage(target);
+  updateActiveLinks(target);
 }
 
 async function loadPage(page) {
@@ -40,7 +40,7 @@ async function loadPage(page) {
       <div class="card">
         <h3>Page not found</h3>
         <p class="placeholder">
-          The page "<b>${page}</b>" does not exist yet.
+          Missing file: <code>src/pages/${page}.js</code>
         </p>
       </div>
     `;
