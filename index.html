@@ -22,24 +22,18 @@
 
     <nav class="nav">
       <div class="nav-group">
-        <div class="nav-heading">Study</div>
         <a class="nav-item active" href="#/home" data-page="home">Home</a>
-        <a class="nav-item" href="#/notes" data-page="notes">Notes</a>
+        <a class="nav-item" href="#/creations" data-page="creations">Creations</a>
         <a class="nav-item" href="#/library" data-page="library">Library</a>
-      </div>
-
-      <div class="nav-divider"></div>
-
-      <div class="nav-group">
-        <div class="nav-heading">Workspace</div>
         <a class="nav-item" href="#/projects" data-page="projects">Projects</a>
-        <a class="nav-item" href="#/setting" data-page="setting">Setting</a>
+        <a class="nav-item" href="#/settings" data-page="settings">Settings</a>
       </div>
 
       <div class="nav-divider"></div>
 
       <div class="nav-group">
         <div class="nav-heading">Tools</div>
+        <a class="nav-item" href="#/tools" data-page="tools">All Tools</a>
         <a class="nav-item" href="#/blocky" data-page="blocky">Blocky</a>
       </div>
     </nav>
@@ -52,43 +46,68 @@
 
     <!-- Top Bar -->
     <header class="topbar">
-      <!-- Centered Search -->
+
+      <!-- Left Navigation -->
+      <div class="top-nav">
+        <a href="#/home" class="top-link active">Home</a>
+        <a href="#/communities" class="top-link">Communities</a>
+      </div>
+
+      <!-- Center Search -->
       <div class="search search-center">
         <input
           type="search"
           aria-label="Search"
-          placeholder=""
+          placeholder="Search..."
         />
+
+        <!-- Search Dropdown -->
+        <div class="search-dropdown">
+          <div class="search-group">
+            <div class="search-heading">User</div>
+            <!-- results injected -->
+          </div>
+          <div class="search-group">
+            <div class="search-heading">Note</div>
+          </div>
+          <div class="search-group">
+            <div class="search-heading">Library</div>
+          </div>
+        </div>
       </div>
 
-      <!-- Actions -->
+      <!-- Right Actions -->
       <div class="top-actions">
-        <button class="btn" id="new-note-btn">New Note</button>
-        <img
-          class="avatar"
-          src="src/assets/avatar.png"
-          alt="User avatar"
-          onerror="this.style.display='none'"
-        />
+        <button class="icon-btn" title="Account">
+          <img src="src/assets/account.svg" alt="Account">
+        </button>
+
+        <button class="icon-btn" title="Notifications">
+          <img src="src/assets/notification.svg" alt="Notifications">
+        </button>
+
+        <button class="icon-btn" title="Settings">
+          <img src="src/assets/settings.svg" alt="Settings">
+        </button>
       </div>
     </header>
 
     <!-- Page Content -->
     <main class="content">
 
-      <!-- SECTION: Overview / Hero -->
+      <!-- Overview / Hero -->
       <section class="section section-overview" id="overview-section">
-        <!-- home.js injects hero / overview here -->
+        <!-- home.js injects hero here -->
       </section>
 
-      <!-- SECTION: Primary Workspace -->
+      <!-- Main Page Mount -->
       <section class="section section-main" id="page-root">
         <!-- router.js mounts pages here -->
       </section>
 
-      <!-- SECTION: Secondary Panels -->
+      <!-- Secondary Panels -->
       <section class="section section-secondary" id="secondary-section">
-        <!-- pinned / activity / stats later -->
+        <!-- later use -->
       </section>
 
     </main>
