@@ -1,9 +1,6 @@
 // src/main.js
 
 import initRouter from "./router.js";
-import { showUpdateLog } from "./Pages/feature/updatelog.js";
-
-showUpdateLog();
 
 document.addEventListener("DOMContentLoaded", () => {
   initRouter();
