@@ -1,5 +1,5 @@
 // src/Pages/communities.js
-export default function render(container) {
+export default function render(container) { }
   container.innerHTML = `
     <div class="communities-container" style="display: flex; gap: 1rem; height: 100vh;">
       <!-- Sidebar -->
