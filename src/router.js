@@ -1,14 +1,15 @@
 // src/router.js
+
 const routes = {
   home: "home",
   creations: "creations",
   library: "library",
-  projects: "project",  
+  projects: "projects",
   settings: "settings",
   tools: "tools",
   blocky: "blocky",
   communities: "communities",
-  marketplace: "marketplace",
+  marketplace: "marketplace"
 };
 
 export default function initRouter() {
@@ -17,21 +18,21 @@ export default function initRouter() {
 }
 
 function handleRoute() {
-  const page = location.hash.replace("#", "") || "home";
-  const target = routes[page] || routes.home;
+  const page = location.hash.replace("#/", "") || "home";
+  const target = routes[page] || "home";
 
   loadPage(target);
-  updateActiveLinks(page);  
+  updateActiveLinks(target);
 }
 
 async function loadPage(page) {
   const root = document.getElementById("page-root");
   if (!root) return;
 
-  root.innerHTML = `<div class="placeholder">Loading page...</div>`;
+  root.innerHTML = `<div class="placeholder">Loading...</div>`;
 
   try {
-    // Use relative path from current location
+    
     const module = await import(`./Pages/${page}.js`);
     root.innerHTML = "";
     module.default(root);
@@ -51,10 +52,5 @@ async function loadPage(page) {
 function updateActiveLinks(page) {
   document.querySelectorAll("[data-page]").forEach(link => {
     link.classList.toggle("active", link.dataset.page === page);
-  });
-
-  document.querySelectorAll(".top-link").forEach(link => {
-    const target = link.getAttribute("href")?.replace("/#", "");
-    link.classList.toggle("active", target === page);
   });
 }
