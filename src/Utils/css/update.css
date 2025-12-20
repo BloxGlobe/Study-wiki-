@@ -1,0 +1,45 @@
+/* Update Log Modal */
+
+.update-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.update-modal {
+  background: linear-gradient(
+    180deg,
+    rgba(15,17,19,0.98),
+    rgba(10,12,14,0.98)
+  );
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 16px;
+  padding: 24px;
+  width: min(420px, 90%);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+}
+
+.update-modal h2 {
+  margin: 0 0 12px;
+  font-size: 18px;
+}
+
+.update-list {
+  padding-left: 18px;
+  margin-bottom: 16px;
+  color: rgba(255,255,255,0.75);
+  font-size: 14px;
+}
+
+.update-list li {
+  margin-bottom: 8px;
+}
+
+.update-modal .btn {
+  width: 100%;
+}
